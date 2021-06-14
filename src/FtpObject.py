@@ -18,6 +18,6 @@ class FtpObject():
             for directory in self.ftp.nlst(dir):
                 if directory.find(".") == -1: # Exclude files
                     self.directory.append(directory[len(self.config["name_backup"])+2:])
-                    self.test(directory)
+                    self.directory_tree(directory)
         except ftplib.error_perm as e:
             print(e)
