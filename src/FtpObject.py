@@ -13,6 +13,8 @@ class FtpObject():
         self.root = "%s/%s/" % (self.ftp.pwd(), self.config["name_backup"])
         self.directory = []
 
+        self.directory_tree(self.root)
+
     def directory_tree(self, dir):
         try:
             for directory in self.ftp.nlst(dir):
@@ -21,3 +23,7 @@ class FtpObject():
                     self.directory_tree(directory)
         except ftplib.error_perm as e:
             print(e)
+
+    def dir_push(self, parent, dir):
+        self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
+        self.ftp.mkd(dir) # Create directory
