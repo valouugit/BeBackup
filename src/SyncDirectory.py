@@ -37,6 +37,26 @@ class SyncDirectory():
 
         return tree_sync
 
+    def sync(self):
+        
+        def parse(here):
+            dir = sync[here].split("/")
+            dir = dir[len(dir)-1]
+            parent = sync[0] if here==0 else sync[1]
+            parent = parent[:-len(dir)]
+            return dir, parent
+
+        for sync in self.tree_sync:
+
+            if sync[0] == None:
+                dir, parent = parse(1)
+                self.ftp.dir_del(parent, dir)
+            elif sync[1] == None:
+                dir, parent = parse(0)
+                self.ftp.dir_push(parent, dir)
+            else:
+                raise
+
 
 
     
