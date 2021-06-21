@@ -27,3 +27,14 @@ class FtpObject():
     def dir_push(self, parent, dir):
         self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
         self.ftp.mkd(dir) # Create directory
+
+    def dir_del(self, parent, dir):
+        try:
+            self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
+            self.ftp.rmd(dir) # Delete directory
+        except ftplib.error_perm as e:
+            if str(e).find("Directory not empty") != -1:
+                # Temp fonction
+                print("[Error] Le repertoire %s%s n'est pas vide" % (parent, dir))
+            else:
+                print(e)
