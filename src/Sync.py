@@ -1,13 +1,13 @@
-from src.LocalObject import LocalObject
-from src.FtpObject import FtpObject
 from src.Compatibility import Compatibility as c
+from src.FtpObject import FtpObject
+from src.LocalObject import LocalObject
 
 class Sync():
 
     def __init__(self):
         self.local = LocalObject()
         self.ftp = FtpObject()
-        self.dir_tree_sync = self.tree_compare()
+        self.dir_tree_sync = self.dir_tree_compare()
 
     def dir_tree_compare(self):
         
