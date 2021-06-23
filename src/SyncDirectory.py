@@ -4,9 +4,9 @@ from src.Compatibility import Compatibility as c
 
 class SyncDirectory():
 
-    def __init__(self, local, ftp):
-        self.local = local
-        self.ftp = ftp
+    def __init__(self):
+        self.local = LocalObject()
+        self.ftp = FtpObject()
         self.tree_sync = self.tree_compare()
 
     def tree_compare(self):
@@ -54,8 +54,6 @@ class SyncDirectory():
             elif sync[1] == None:
                 dir, parent = parse(0)
                 self.ftp.dir_push(parent, dir)
-            else:
-                raise
 
 
 
