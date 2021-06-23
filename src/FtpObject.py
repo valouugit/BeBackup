@@ -12,15 +12,27 @@ class FtpObject():
         self.ftp = FTP(self.config["ftp_server"], self.config["ftp_username"], self.config["ftp_password"])
         self.root = "%s/%s/" % (self.ftp.pwd(), self.config["name_backup"])
         self.directory = []
+        self.files = []
 
-        self.directory_tree(self.root)
+        self.create_dir_backup()
+        self.tree(self.root)
 
-    def directory_tree(self, dir):
+    def create_dir_backup(self):
+        directory_exist = False
+        for directory in self.ftp.nlst():
+            if directory == self.config["name_backup"]:
+                directory_exist = True
+        if not directory_exist:
+            self.ftp.mkd(self.config["name_backup"])
+
+    def tree(self, dir):
         try:
             for directory in self.ftp.nlst(dir):
                 if directory.find(".") == -1: # Exclude files
                     self.directory.append(directory[len(self.config["name_backup"])+2:])
-                    self.directory_tree(directory)
+                    self.tree(directory)
+                else:
+                    self.files.append(directory)
         except ftplib.error_perm as e:
             print(e)
 
