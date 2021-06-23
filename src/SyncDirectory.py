@@ -2,14 +2,14 @@ from src.LocalObject import LocalObject
 from src.FtpObject import FtpObject
 from src.Compatibility import Compatibility as c
 
-class SyncDirectory():
+class Sync():
 
     def __init__(self):
         self.local = LocalObject()
         self.ftp = FtpObject()
-        self.tree_sync = self.tree_compare()
+        self.dir_tree_sync = self.tree_compare()
 
-    def tree_compare(self):
+    def dir_tree_compare(self):
         
         tree_local = self.local.directory
         tree_ftp = self.ftp.directory
@@ -37,7 +37,7 @@ class SyncDirectory():
 
         return tree_sync
 
-    def sync(self):
+    def dir_sync(self):
         
         def parse(here):
             dir = sync[here].split("/")
@@ -46,7 +46,7 @@ class SyncDirectory():
             parent = parent[:-len(dir)]
             return dir, parent
 
-        for sync in self.tree_sync:
+        for sync in self.dir_tree_sync:
 
             if sync[0] == None:
                 dir, parent = parse(1)
