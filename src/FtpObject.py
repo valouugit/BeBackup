@@ -1,3 +1,4 @@
+from src.Compatibility import Compatibility as c
 from ftplib import FTP
 import ftplib
 import json, datetime, shutil, os
@@ -35,14 +36,25 @@ class FtpObject():
     def dir_push(self, parent, dir):
         self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
         self.ftp.mkd(dir) # Create directory
+        print("[Dir Push] /%s/%s%s" % (self.config["name_backup"], parent, dir))
 
     def dir_del(self, parent, dir):
         try:
             self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
             self.ftp.rmd(dir) # Delete directory
+            print("[Dir Delete] /%s/%s%s" % (self.config["name_backup"], parent, dir))
         except ftplib.error_perm as e:
             if str(e).find("Directory not empty") != -1:
                 # Temp fonction
                 print("[Error] Le repertoire %s%s n'est pas vide" % (parent, dir))
             else:
                 print(e)
+
+    def file_push(self, dir, file):
+
+        with open("%s%s%s" % (self.config["dir_backup"], dir, file), "rb") as file_to_push:
+            dir = c.dir_windows_to_ftp(dir)
+            self.ftp.cwd("%s%s" % (self.root[:-1], dir))
+            self.ftp.storbinary('STOR ' + file, file_to_push)
+
+        print("[File Push] %s%s%s" % (self.config["dir_backup"], dir, file))
