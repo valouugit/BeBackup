@@ -18,11 +18,7 @@ class FtpObject():
         self.tree(self.root)
 
     def create_dir_backup(self):
-        directory_exist = False
-        for directory in self.ftp.nlst():
-            if directory == self.config["name_backup"]:
-                directory_exist = True
-        if not directory_exist:
+        if not self.config["name_backup"] in self.ftp.nlst():
             self.ftp.mkd(self.config["name_backup"])
 
     def tree(self, dir):
