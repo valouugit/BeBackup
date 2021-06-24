@@ -7,12 +7,11 @@ class Sync():
     def __init__(self):
         self.local = LocalObject()
         self.ftp = FtpObject()
-        self.dir_tree_sync = self.dir_tree_compare()
+        self.dir_tree_sync = self.tree_compare(self.local.directory, self.ftp.directory)
+        self.files_tree_sync = self.tree_compare(self.local.files, self.ftp.files)
 
-    def dir_tree_compare(self):
+    def tree_compare(self, tree_local, tree_ftp):
         
-        tree_local = self.local.directory
-        tree_ftp = self.ftp.directory
         rest_dir_ftp = tree_ftp
         tree_sync = []
 
