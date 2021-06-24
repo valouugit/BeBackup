@@ -1,5 +1,4 @@
 import json, os
-from src.FileObject import FileObject
 
 class LocalObject():
     
@@ -20,4 +19,5 @@ class LocalObject():
                     self.directory.append(directory[len(self.config["dir_backup"])+1:])
                 # Save file
                 for fichier in fichiers:
-                    self.files.append("%s\\%s" % (directory[len(self.config["dir_backup"]):], fichier))
+                    if fichier.find(".") != -1: # Exclude file without extension
+                        self.files.append("%s\\%s" % (directory[len(self.config["dir_backup"]):], fichier))
