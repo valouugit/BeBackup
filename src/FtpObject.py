@@ -58,3 +58,7 @@ class FtpObject():
             self.ftp.storbinary('STOR ' + file, file_to_push)
 
         print("[File Push] %s%s%s" % (self.config["dir_backup"], dir, file))
+
+    def file_del(self, dir, file):
+        self.ftp.cwd("%s%s" % (self.root, dir))
+        self.ftp.delete(file)
