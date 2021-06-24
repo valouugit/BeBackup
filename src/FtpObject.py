@@ -24,12 +24,12 @@ class FtpObject():
 
     def tree(self, dir):
         try:
-            for directory in self.ftp.nlst(dir):
-                if directory.find(".") == -1: # Exclude files
-                    self.directory.append(directory[len(self.config["name_backup"])+2:])
-                    self.tree(directory)
+            for item in self.ftp.nlst(dir):
+                if "." in item: # Exclude files
+                    self.files.append(item[len(self.config["name_backup"])+1:])
                 else:
-                    self.files.append(directory)
+                    self.directory.append(item[len(self.config["name_backup"])+2:])
+                    self.tree(item)
         except ftplib.error_perm as e:
             print(e)
 
