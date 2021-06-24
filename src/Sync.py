@@ -54,20 +54,6 @@ class Sync():
                 dir, parent = parse(0)
                 self.ftp.dir_push(parent, dir)
 
-    def files_sync(self):
+
+
     
-        def parse(here):
-            files = sync[here].split("/")
-            files = files[len(files)-1]
-            dir = sync[0] if here==0 else sync[1]
-            dir = dir[:-len(files)]
-            return dir, files
-
-        for sync in self.files_tree_sync:
-
-            if sync[0] == None:
-                dir, files = parse(1)
-                #self.ftp.dir_del(files, dir)
-            elif sync[1] == None:
-                dir, files = parse(0)
-                self.ftp.file_push(c.dir_ftp_to_windows(dir), files) 
