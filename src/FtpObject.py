@@ -14,6 +14,8 @@ class FtpObject():
         self.root = "%s/%s/" % (self.ftp.pwd(), self.config["name_backup"])
         self.directory = []
         self.files = []
+        self.temp_directory = []
+        self.temp_files = []
 
         self.create_dir_backup()
         self.tree(self.root)
@@ -22,33 +24,47 @@ class FtpObject():
         if not self.config["name_backup"] in self.ftp.nlst():
             self.ftp.mkd(self.config["name_backup"])
 
-    def tree(self, dir):
+    def tree(self, dir, temp=False):
         try:
             for item in self.ftp.nlst(dir):
                 if "." in item: # Exclude files
-                    self.files.append(item[len(self.config["name_backup"])+1:])
+                    if temp:
+                        self.temp_files.append(item[len(self.config["name_backup"])+1:])
+                    else:
+                        self.files.append(item[len(self.config["name_backup"])+1:])
                 else:
-                    self.directory.append(item[len(self.config["name_backup"])+2:])
-                    self.tree(item)
+                    if temp:
+                        self.temp_directory.append(item[len(self.config["name_backup"])+2:])
+                        self.tree(item, temp=True)
+                    else:
+                        self.directory.append(item[len(self.config["name_backup"])+2:])
+                        self.tree(item)
         except ftplib.error_perm as e:
             print(e)
 
     def dir_push(self, parent, dir):
         self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
         self.ftp.mkd(dir) # Create directory
-        print("[Dir Push] /%s/%s%s" % (self.config["name_backup"], parent, dir))
 
-    def dir_del(self, parent, dir):
+    def dir_del(self, parent, dir_del):
         try:
+            self.temp_files, self.temp_directory = [], []
+            self.tree("%s%s%s" % (self.root[1:], parent, dir_del), temp=True)
+            for file in self.temp_files:
+                fl = file.split("/")
+                fl = fl[len(fl)-1]
+                dir = file[:-len(fl)]
+                self.file_del(dir, fl)
+            for directory in self.temp_directory:
+                fl = directory.split("/")
+                fl = fl[len(fl)-1]
+                dir = directory[:-len(fl)]
+                self.ftp.cwd("/%s/%s" % (self.config["name_backup"], dir)) # Moove to parent dir
+                self.ftp.rmd(fl) # Delete directory
             self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
-            self.ftp.rmd(dir) # Delete directory
-            print("[Dir Delete] /%s/%s%s" % (self.config["name_backup"], parent, dir))
+            self.ftp.rmd(dir_del) # Delete directory
         except ftplib.error_perm as e:
-            if str(e).find("Directory not empty") != -1:
-                # Temp fonction
-                print("[Error] Le repertoire %s%s n'est pas vide" % (parent, dir))
-            else:
-                print(e)
+            print(e)            
 
     def file_push(self, dir, file):
 
@@ -57,8 +73,7 @@ class FtpObject():
             self.ftp.cwd("%s%s" % (self.root[:-1], dir))
             self.ftp.storbinary('STOR ' + file, file_to_push)
 
-        print("[File Push] %s%s%s" % (self.config["dir_backup"], dir, file))
-
     def file_del(self, dir, file):
         self.ftp.cwd("%s%s" % (self.root, dir))
         self.ftp.delete(file)
+        
