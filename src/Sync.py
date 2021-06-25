@@ -5,6 +5,9 @@ from src.LocalObject import LocalObject
 class Sync():
 
     def __init__(self):
+        self.tree_resync()
+
+    def tree_resync(self):
         self.local = LocalObject()
         self.ftp = FtpObject()
         self.dir_tree_sync = self.tree_compare(self.local.directory, self.ftp.directory)
@@ -49,11 +52,38 @@ class Sync():
 
             if sync[0] == None:
                 dir, parent = parse(1)
-                self.ftp.dir_del(parent, dir)
+                try:
+                    self.ftp.dir_del(parent, dir)
+                except:
+                    pass
             elif sync[1] == None:
                 dir, parent = parse(0)
                 self.ftp.dir_push(parent, dir)
 
+        self.tree_resync()
 
-
+    def files_sync(self):
     
+        def parse(here):
+            files = sync[here].split("/")
+            files = files[len(files)-1]
+            dir = sync[0] if here==0 else sync[1]
+            dir = dir[:-len(files)]
+            return dir, files
+
+        for sync in self.files_tree_sync:
+
+            if sync[0] == None:
+                dir, files = parse(1)
+                self.ftp.file_del(dir, files)
+            elif sync[1] == None:
+                dir, files = parse(0)
+                self.ftp.file_push(c.dir_ftp_to_windows(dir), files) 
+
+        self.tree_resync()
+
+
+    def sync(self):
+        for i in range(0,5):
+            self.dir_sync()
+            self.files_sync()
