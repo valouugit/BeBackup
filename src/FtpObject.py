@@ -48,19 +48,6 @@ class FtpObject():
 
     def dir_del(self, parent, dir_del):
         try:
-            self.temp_files, self.temp_directory = [], []
-            self.tree("%s%s%s" % (self.root[1:], parent, dir_del), temp=True)
-            for file in self.temp_files:
-                fl = file.split("/")
-                fl = fl[len(fl)-1]
-                dir = file[:-len(fl)]
-                self.file_del(dir, fl)
-            for directory in self.temp_directory:
-                fl = directory.split("/")
-                fl = fl[len(fl)-1]
-                dir = directory[:-len(fl)]
-                self.ftp.cwd("/%s/%s" % (self.config["name_backup"], dir)) # Moove to parent dir
-                self.ftp.rmd(fl) # Delete directory
             self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
             self.ftp.rmd(dir_del) # Delete directory
         except ftplib.error_perm as e:
