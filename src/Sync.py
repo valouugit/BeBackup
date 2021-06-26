@@ -30,16 +30,16 @@ class Sync():
                     rest_dir_ftp.remove(ftp)
 
             if len(sync) == 1:
-                sync.append(None)
+                sync.append("None")
 
             tree_sync.append(sync)
 
         for ftp in rest_dir_ftp:
-            tree_sync.append([None, ftp])
+            tree_sync.append(["None", ftp])
 
         return tree_sync
 
-    def dir_sync(self):
+    def dir_sync(self, push = False, delete = False):
         
         def parse(here):
             dir = sync[here].split("/")
@@ -48,21 +48,26 @@ class Sync():
             parent = parent[:-len(dir)]
             return dir, parent
 
-        for sync in self.dir_tree_sync:
+        dir_tree_sync_order = self.dir_tree_sync
+        if delete:
+            dir_tree_sync_order.sort(key=lambda item:len(item[1]), reverse=True)
+        else:
+            dir_tree_sync_order.sort(key=lambda item:len(item[0]))
 
-            if sync[0] == None:
+        for sync in dir_tree_sync_order:
+
+            if sync[0] == "None" and delete:
                 dir, parent = parse(1)
                 try:
                     self.ftp.dir_del(parent, dir)
                 except:
                     pass
-            elif sync[1] == None:
+            elif sync[1] == "None" and push:
                 dir, parent = parse(0)
                 self.ftp.dir_push(parent, dir)
 
-        self.tree_resync()
 
-    def files_sync(self):
+    def files_sync(self, push = False, delete = False):
     
         def parse(here):
             files = sync[here].split("/")
@@ -73,17 +78,16 @@ class Sync():
 
         for sync in self.files_tree_sync:
 
-            if sync[0] == None:
+            if sync[0] == "None" and delete:
                 dir, files = parse(1)
                 self.ftp.file_del(dir, files)
-            elif sync[1] == None:
+            elif sync[1] == "None" and push:
                 dir, files = parse(0)
                 self.ftp.file_push(c.dir_ftp_to_windows(dir), files) 
 
-        self.tree_resync()
-
 
     def sync(self):
-        for i in range(0,5):
-            self.dir_sync()
-            self.files_sync()
+        self.files_sync(delete=True)
+        self.dir_sync(delete=True)
+        self.dir_sync(push=True)
+        self.files_sync(push=True)
