@@ -1,7 +1,7 @@
 from src.Compatibility import Compatibility as c
 from ftplib import FTP
 import ftplib
-import json, datetime, shutil, os
+import json, time
 
 class FtpObject():
 
@@ -63,4 +63,8 @@ class FtpObject():
     def file_del(self, dir, file):
         self.ftp.cwd("%s%s" % (self.root, dir))
         self.ftp.delete(file)
-        
+
+    def get_time(self, dir, file):
+        self.ftp.cwd("%s%s" % (self.root, dir))
+        datetime = self.ftp.voidcmd("MDTM " + file)[4:].strip()
+        return time.mktime(time.strptime(datetime, '%Y%m%d%H%M%S'))
