@@ -84,7 +84,16 @@ class Sync():
             elif sync[1] == "None" and push:
                 dir, files = parse(0)
                 self.ftp.file_push(c.dir_ftp_to_windows(dir), files) 
+            else:
+                dir, files = parse(0)
+                if self.date_compare(dir, files):
+                    self.ftp.file_push(c.dir_ftp_to_windows(dir), files)
 
+    def date_compare(self, dir, file):
+        time_local = self.local.get_time(dir, file)
+        time_ftp = self.ftp.get_time(dir, file)
+
+        return True if time_local > time_ftp else False
 
     def sync(self):
         self.files_sync(delete=True)
