@@ -21,3 +21,6 @@ class LocalObject():
                 for fichier in fichiers:
                     if fichier.find(".") != -1: # Exclude file without extension
                         self.files.append("%s\\%s" % (directory[len(self.config["dir_backup"]):], fichier))
+
+    def get_time(self, dir, file):
+        return os.path.getmtime("%s%s%s" % (self.config["dir_backup"], dir, file))
