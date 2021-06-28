@@ -84,7 +84,7 @@ class Sync():
             elif sync[1] == "None" and push:
                 dir, files = parse(0)
                 self.ftp.file_push(c.dir_ftp_to_windows(dir), files) 
-            else:
+            elif sync[0] != "None" and sync[1] != "None" and push:
                 dir, files = parse(0)
                 if self.date_compare(dir, files):
                     self.ftp.file_push(c.dir_ftp_to_windows(dir), files)
