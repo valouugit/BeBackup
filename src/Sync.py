@@ -4,13 +4,14 @@ from src.LocalObject import LocalObject
 
 class Sync():
 
-    def __init__(self):
+    def __init__(self, log = True):
+        self.log = log
         self.tree_resync()
         self.timestamp = self.diff_timestamp()
 
     def tree_resync(self):
         self.local = LocalObject()
-        self.ftp = FtpObject()
+        self.ftp = FtpObject(log = self.log)
         self.dir_tree_sync = self.tree_compare(self.local.directory, self.ftp.directory)
         self.files_tree_sync = self.tree_compare(self.local.files, self.ftp.files)
 
@@ -107,7 +108,9 @@ class Sync():
         return time_local - time_ftp
 
     def sync(self):
+        if self.log: print("\nStarting backup\n")
         self.files_sync(delete=True)
         self.dir_sync(delete=True)
         self.dir_sync(push=True)
         self.files_sync(push=True)
+        if self.log: print("\nBackup completed\n")
