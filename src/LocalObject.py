@@ -24,3 +24,6 @@ class LocalObject():
 
     def get_time(self, dir, file):
         return os.path.getmtime("%s%s%s" % (self.config["dir_backup"], dir, file))
+    
+    def get_timestamp(self):
+        return os.path.getmtime("timestamp.ts")
