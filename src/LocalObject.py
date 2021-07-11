@@ -20,10 +20,11 @@ class LocalObject():
                 # Save file
                 for fichier in fichiers:
                     if fichier.find(".") != -1: # Exclude file without extension
-                        self.files.append("%s\\%s" % (directory[len(self.config["dir_backup"]):], fichier))
+                        file = "%s\\%s" % (directory[len(self.config["dir_backup"]):], fichier)
+                        self.files.append(file.lstrip("\\"))
 
     def get_time(self, dir, file):
-        return os.path.getmtime("%s%s%s" % (self.config["dir_backup"], dir, file))
+        return os.path.getmtime("%s/%s/%s" % (self.config["dir_backup"], dir, file))
     
     def get_timestamp(self):
         return os.path.getmtime("timestamp.ts")
