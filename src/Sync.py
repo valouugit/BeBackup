@@ -5,8 +5,8 @@ from src.LocalObject import LocalObject
 class Sync():
 
     def __init__(self):
-        self.timestamp = self.diff_timestamp()
         self.tree_resync()
+        self.timestamp = self.diff_timestamp()
 
     def tree_resync(self):
         self.local = LocalObject()
