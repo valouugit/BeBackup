@@ -6,6 +6,7 @@ class Sync():
 
     def __init__(self):
         self.tree_resync()
+        self.timestamp = self.diff_timestamp()
 
     def tree_resync(self):
         self.local = LocalObject()
@@ -90,10 +91,20 @@ class Sync():
                     self.ftp.file_push(c.dir_ftp_to_windows(dir), files)
 
     def date_compare(self, dir, file):
-        time_local = self.local.get_time(dir, file)
+        time_local = self.local.get_time(dir, file) - self.timestamp
         time_ftp = self.ftp.get_time(dir, file)
 
         return True if time_local > time_ftp else False
+
+    def diff_timestamp(self):
+        file = "timestamp.ts"
+        with open(file, "w") as ts:
+            ts.write("timestamp")
+        self.ftp.file_push(file="timestamp.ts", timestamp=True)
+        time_local = self.local.get_timestamp()
+        time_ftp = self.ftp.get_time("", file)
+
+        return time_local - time_ftp
 
     def sync(self):
         self.files_sync(delete=True)
