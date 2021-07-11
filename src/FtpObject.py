@@ -5,7 +5,8 @@ import json, time
 
 class FtpObject():
 
-    def __init__(self):
+    def __init__(self, log = True):
+        self.log = log
         #   Load configuration
         with open("config.json", "r") as config:
             self.config = json.load(config)
@@ -45,11 +46,13 @@ class FtpObject():
     def dir_push(self, parent, dir):
         self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
         self.ftp.mkd(dir) # Create directory
+        if self.log: print("Sending directory '%s%s'" % (parent, dir))
 
     def dir_del(self, parent, dir_del):
         try:
             self.ftp.cwd("/%s/%s" % (self.config["name_backup"], parent)) # Moove to parent dir
             self.ftp.rmd(dir_del) # Delete directory
+            if self.log: print("Deleting directory '%s%s'" % (parent, dir_del))
         except ftplib.error_perm as e:
             print(e)            
 
@@ -59,6 +62,7 @@ class FtpObject():
                 dir = c.dir_windows_to_ftp(dir)
                 self.ftp.cwd("/%s/%s" % (self.root, dir))
                 self.ftp.storbinary('STOR ' + file, file_to_push)
+                if self.log: print("Sending file '%s%s'" % (dir, file))
         else:
             with open(file, "rb") as file_to_push:
                 self.ftp.cwd(self.root[:-1])
@@ -67,6 +71,7 @@ class FtpObject():
     def file_del(self, dir, file):
         self.ftp.cwd("%s%s" % (self.root, dir))
         self.ftp.delete(file)
+        if self.log: print("Deleting file '%s%s'" % (dir, file))
 
     def get_time(self, dir, file):
         self.ftp.cwd("%s%s" % (self.root, dir))
