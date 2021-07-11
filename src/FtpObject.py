@@ -29,15 +29,15 @@ class FtpObject():
             for item in self.ftp.nlst(dir):
                 if "." in item: # Exclude files
                     if temp:
-                        self.temp_files.append(item[len(self.config["name_backup"])+1:])
+                        self.temp_files.append(item.lstrip(self.root))
                     else:
-                        self.files.append(item[len(self.config["name_backup"])+1:])
+                        self.files.append(item.lstrip(self.root))
                 else:
                     if temp:
-                        self.temp_directory.append(item[len(self.config["name_backup"])+2:])
+                        self.temp_directory.append(item.lstrip(self.root))
                         self.tree(item, temp=True)
                     else:
-                        self.directory.append(item[len(self.config["name_backup"])+2:])
+                        self.directory.append(item.lstrip(self.root))
                         self.tree(item)
         except ftplib.error_perm as e:
             print(e)
@@ -55,9 +55,9 @@ class FtpObject():
 
     def file_push(self, dir=None, file=None, timestamp=False):
         if not timestamp:
-            with open("%s%s%s" % (self.config["dir_backup"], dir, file), "rb") as file_to_push:
+            with open("%s/%s/%s" % (self.config["dir_backup"], dir, file), "rb") as file_to_push:
                 dir = c.dir_windows_to_ftp(dir)
-                self.ftp.cwd("%s%s" % (self.root[:-1], dir))
+                self.ftp.cwd("/%s/%s" % (self.root, dir))
                 self.ftp.storbinary('STOR ' + file, file_to_push)
         else:
             with open(file, "rb") as file_to_push:
