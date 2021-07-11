@@ -53,12 +53,16 @@ class FtpObject():
         except ftplib.error_perm as e:
             print(e)            
 
-    def file_push(self, dir, file):
-
-        with open("%s%s%s" % (self.config["dir_backup"], dir, file), "rb") as file_to_push:
-            dir = c.dir_windows_to_ftp(dir)
-            self.ftp.cwd("%s%s" % (self.root[:-1], dir))
-            self.ftp.storbinary('STOR ' + file, file_to_push)
+    def file_push(self, dir=None, file=None, timestamp=False):
+        if not timestamp:
+            with open("%s%s%s" % (self.config["dir_backup"], dir, file), "rb") as file_to_push:
+                dir = c.dir_windows_to_ftp(dir)
+                self.ftp.cwd("%s%s" % (self.root[:-1], dir))
+                self.ftp.storbinary('STOR ' + file, file_to_push)
+        else:
+            with open(file, "rb") as file_to_push:
+                self.ftp.cwd(self.root[:-1])
+                self.ftp.storbinary('STOR ' + file, file_to_push)
 
     def file_del(self, dir, file):
         self.ftp.cwd("%s%s" % (self.root, dir))
