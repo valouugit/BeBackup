@@ -1,4 +1,4 @@
-import json, os
+import os
 
 class LocalObject():
     
