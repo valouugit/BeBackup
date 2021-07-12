@@ -14,7 +14,8 @@ class LocalObject():
             if directory.find(".") == -1: # Exlude hidden folders
                 # Save directory
                 if len(directory) != len(self.ftp_config.backup_dir): # Exclude root dir
-                    self.directory.append(directory[len(self.ftp_config.backup_dir):])
+                    dir = directory[len(self.ftp_config.backup_dir):]
+                    self.directory.append(dir.lstrip("\\"))
                 # Save file
                 for fichier in fichiers:
                     if fichier.find(".") != -1: # Exclude file without extension
