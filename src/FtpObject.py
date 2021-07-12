@@ -1,7 +1,6 @@
 from src.Compatibility import Compatibility as c
 from ftplib import FTP
-import ftplib
-import json, time
+import ftplib, time
 
 class FtpObject():
 
@@ -26,7 +25,6 @@ class FtpObject():
     def tree(self, dir, temp=False):
         try:
             for item in self.ftp.nlst(dir):
-                print(item)
                 if "." in item: # Exclude files
                     if temp:
                         self.temp_files.append(item.lstrip(self.root))
