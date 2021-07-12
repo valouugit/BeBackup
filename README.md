@@ -60,7 +60,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="https://i.ibb.co/T412mYv/Capture-d-cran-2021-07-12-151357.png" alt="Preview" width="1120" height="600">
+<img src="https://i.ibb.co/T412mYv/Capture-d-cran-2021-07-12-151357.png" alt="Preview">
 
 BeBackup allows a folder to be synchronized on an FTP server. <br>
 BeBackup checks for new files, deleted files, and file modifications
@@ -98,7 +98,7 @@ Check the presence of these modules
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="https://i.ibb.co/JQtkkSZ/Capture-d-cran-2021-07-12-152701.png" alt="Preview" width="670" height="140">
+<img src="https://i.ibb.co/JQtkkSZ/Capture-d-cran-2021-07-12-152701.png" alt="Preview">
 
 <!-- CONTRIBUTING -->
 ## Contributing
