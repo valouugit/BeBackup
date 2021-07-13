@@ -1,4 +1,4 @@
-from src.Compatibility import Compatibility as c
+from .Compatibility import Compatibility as c
 from ftplib import FTP
 import ftplib, time
 

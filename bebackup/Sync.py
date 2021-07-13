@@ -1,6 +1,6 @@
-from src.Compatibility import Compatibility as c
-from src.FtpObject import FtpObject
-from src.LocalObject import LocalObject
+from .Compatibility import Compatibility as c
+from .FtpObject import FtpObject
+from .LocalObject import LocalObject
 
 class Sync():
 
