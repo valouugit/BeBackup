@@ -23,7 +23,7 @@
     ☁️ Cloud backup script with FTP
     <br />
     <br />
-    <a href="https://github.com/valouugit/BeBackup">View Repo</a>
+    <a href="https://pypi.org/project/bebackup/">View PyPI</a>
     ·
     <a href="https://github.com/valouugit/BeBackup/issues">Report Bug</a>
     ·
@@ -46,7 +46,6 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -84,13 +83,9 @@ Check the presence of these modules
 
 ### Installation
 
-1. Clone the repo
+1. pip
    ```sh
-   git clone https://github.com/valouugit/BeBackup.git
-   ```
-2. Run
-   ```sh
-   python BeBackup.py
+   pip install bebackup
    ```
 
 
@@ -98,7 +93,7 @@ Check the presence of these modules
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="https://i.ibb.co/JQtkkSZ/Capture-d-cran-2021-07-12-152701.png" alt="Preview">
+<img src="https://i.ibb.co/GVGXSVJ/Capture-d-cran-2021-07-13-233056.png" alt="Exemple">
 
 <!-- CONTRIBUTING -->
 ## Contributing
