@@ -11,11 +11,7 @@ setup(
     url = 'https://github.com/valouugit/BeBackup',
     download_url = 'https://github.com/valouugit/BeBackup/archive/refs/tags/v1.0.tar.gz',
     keywords = ['FTP', 'CLOUD', 'BACKUP'],
-    install_requires=[
-            'ftplib',
-            'os',
-            'time'
-        ],
+    install_requires=[],
     classifiers=[
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers',
