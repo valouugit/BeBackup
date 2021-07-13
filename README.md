@@ -93,7 +93,7 @@ Check the presence of these modules
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="https://i.ibb.co/JQtkkSZ/Capture-d-cran-2021-07-12-152701.png" alt="Preview">
+<img src="https://i.ibb.co/GVGXSVJ/Capture-d-cran-2021-07-13-233056.png" alt="Exemple">
 
 <!-- CONTRIBUTING -->
 ## Contributing
